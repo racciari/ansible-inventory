@@ -4,14 +4,13 @@
 Ansible dynamic inventory for Dnsmasq
 '''
 
-import os
-import sys
 import argparse
 
 try:
     import json
 except ImportError:
     import simplejson as json
+
 
 class DnsmasqInventory(object):
 
@@ -30,7 +29,7 @@ class DnsmasqInventory(object):
         else:
             self.inventory = self.empty_inventory()
 
-        print json.dumps(self.inventory);
+        print json.dumps(self.inventory)
 
     def dnsmasq_inventory(self):
         return {
@@ -45,16 +44,18 @@ class DnsmasqInventory(object):
     def empty_inventory(self):
         return {'_meta': {'hostvars': {}}}
 
-    def parse_leases(self,file='/var/lib/dnsmasq/dnsmasq.leases'):
+    def parse_leases(self, file='/var/lib/dnsmasq/dnsmasq.leases'):
         with open(file) as f:
             return [l.split()[3] for l in f]
 
     # Read the command line args passed to the script.
     def read_cli_args(self):
         parser = argparse.ArgumentParser()
-        parser.add_argument('--list', action = 'store_true')
-        parser.add_argument('--host', action = 'store')
+        parser.add_argument('--list', action='store_true')
+        parser.add_argument('--host', action='store')
         self.args = parser.parse_args()
+
 
 # Get the inventory.
 DnsmasqInventory()
+
